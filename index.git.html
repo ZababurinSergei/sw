@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head></head>
+<body></body>
+<script type="module">
+    window.addEventListener('message', (event) => {
+        if(event.data.hasOwnProperty('html')) {
+            let htmlHead = event.data.html.slice(event.data.html.indexOf('<head>'), event.data.html.indexOf('</head>'))
+            let htmlBody = event.data.html.slice(event.data.html.indexOf('<body>'), event.data.html.indexOf('</body>'))
+
+            const divFragmentHead = document.createRange().createContextualFragment(`${htmlHead}`);
+            const divFragmentBody = document.createRange().createContextualFragment(`${htmlBody}`);
+
+            document.head.appendChild(divFragmentHead);
+            document.body.appendChild(divFragmentBody);
+        }
+    }, false)
+</script>
+</html>
