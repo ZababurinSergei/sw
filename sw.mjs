@@ -160,7 +160,7 @@ self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
     let destination = event.request.destination;
 
-    if(url.pathname !== '/sw/' && url.pathname !== '/sw') {
+    if(url.pathname !== '/sw/' && url.pathname !== '/sw' && url.pathname !== '/favicon.ico') {
         const isHtml = url.pathname.includes('index.git.html')
 
         const isBrowser = (url.pathname.includes('/sw/') && !isHtml)
