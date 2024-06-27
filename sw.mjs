@@ -160,7 +160,7 @@ self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
     let destination = event.request.destination;
 
-    if(url.pathname !== '/DevOps/sw/' && url.pathname !== '/DevOps/sw') {
+    if(url.pathname !== '/sw/' && url.pathname !== '/sw') {
         const isHtml = url.pathname.includes('index.git.html')
 
         const isBrowser = (url.pathname.includes('/sw/') && !isHtml)
@@ -183,7 +183,7 @@ self.addEventListener('fetch', event => {
                 const string = textDecoder.decode(servicePath)
 
                 const path = isBrowser
-                    ? `${string}/docs/${url.pathname.replace('/DevOps/sw/', '')}`
+                    ? `${string}/docs/${url.pathname.replace('/sw/', '')}`
                     : `${string}${url.pathname}`
 
                 const options = getHeaders(destination, path)
@@ -193,7 +193,7 @@ self.addEventListener('fetch', event => {
                         const file = await readFile(path);
                         return new Response(file, options)
                     } catch (e) {
-                        let pathname = url.pathname.replace('/DevOps/sw/', '')
+                        let pathname = url.pathname.replace('/sw/', '')
                         pathname = pathname.replaceAll("%20",' ')
                         const path = `${string}/${pathname}`
                         console.log('-------------------------------- path -----------------------------------','string',string, 'pathname:',pathname)
