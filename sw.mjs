@@ -178,6 +178,8 @@ self.addEventListener('fetch', event => {
             || (url.pathname.includes('/welcomebook') && !url.pathname.includes('git-upload-pack') && !url.pathname.includes('index.git.html') && !url.pathname.includes('info/refs'))
             || (url.pathname.includes('/checklist') && !url.pathname.includes('git-upload-pack') && !url.pathname.includes('index.git.html') && !url.pathname.includes('info/refs'))
             || url.pathname.includes('/idKey/') || url.pathname.includes('/ansis/') || url.pathname.includes('/store/')) {
+
+
             event.respondWith((async () => {
                 const servicePath = await readFile('config')
                 const string = textDecoder.decode(servicePath)
@@ -190,18 +192,20 @@ self.addEventListener('fetch', event => {
 
                 if(isBrowser) {
                     try {
+                        console.log('-------------------------------- path 1 -----------------------------------',path)
                         const file = await readFile(path);
                         return new Response(file, options)
                     } catch (e) {
                         let pathname = url.pathname.replace('/sw/', '')
                         pathname = pathname.replaceAll("%20",' ')
                         const path = `${string}/${pathname}`
-                        console.log('-------------------------------- path -----------------------------------','string',string, 'pathname:',pathname)
+                        console.log('-------------------------------- path 2 -----------------------------------',path)
 
                         const file =  await readFile(path)
                         return new Response(file, options)
                     }
                 } else {
+                    console.log('-------------------------------- path 3 -----------------------------------',path)
                     return new Response(await readFile(path), options)
                 }
             }) ());
