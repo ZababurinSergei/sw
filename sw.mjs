@@ -160,10 +160,11 @@ self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
     let destination = event.request.destination;
 
+    console.log('---------------- URL ----------------', url)
     if(url.pathname !== '/sw/' && url.pathname !== '/sw' && url.pathname !== '/favicon.ico') {
         const isHtml = url.pathname.includes('index.git.html')
 
-        const isBrowser = (url.pathname.includes('/sw/') && !isHtml)
+        const isBrowser = (url.pathname.includes('/sw') && !isHtml)
             || url.pathname.includes('swagger-initializer.mjs')
             || url.pathname.includes('/api/idKey')
             || url.pathname.includes('/api/ansis')
@@ -209,11 +210,6 @@ self.addEventListener('fetch', event => {
                     return new Response(await readFile(path), options)
                 }
             }) ());
-        } else {
-            // if(!isHtml) {
-            //     return url.href
-            // }
-            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', url)
         }
     }
 });
