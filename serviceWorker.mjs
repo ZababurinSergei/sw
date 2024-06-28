@@ -172,6 +172,7 @@ self.addEventListener('fetch', event => {
     let destination = event.request.destination;
 
     if(!url.pathname.includes('index.sw.html') && !url.pathname.includes('git-upload-pack') && !url.pathname.includes('info/refs')) {
+      console.log('-------------------------------------------------------------------------------------------------------------------------------', url.pathname)
         // const isSw = event.request.referrer.includes('/sw/')
         let isSw = url.pathname.includes('/sw/')
         const isService = url.pathname.includes('/welcomebook/')
