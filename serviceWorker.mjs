@@ -171,87 +171,89 @@ self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
     let destination = event.request.destination;
 
-    // const isSw = event.request.referrer.includes('/sw/')
-    let isSw = url.pathname.includes('/sw/')
-    const isService = url.pathname.includes('/welcomebook/')
-    const isExternal = !event.request.url.startsWith('https://zababurinsergei.github.io/')
+    if(!url.pathname.includes('index.sw.html') && !url.pathname.includes('git-upload-pack') && !url.pathname.includes('info/refs')) {
+        // const isSw = event.request.referrer.includes('/sw/')
+        let isSw = url.pathname.includes('/sw/')
+        const isService = url.pathname.includes('/welcomebook/')
+        const isExternal = !event.request.url.startsWith('https://zababurinsergei.github.io/')
 
-    if(!isSw) {
-        console.log('dddd', event.request.url);
-        // console.log('ddddddddddddddddddddddddd',location, event.request,  url.pathname)
-    }
-
-    console.log('----------------------- 1 -------------------------', isSw || isService, url.pathname !== '/DevOps/sw/', url.pathname !==  '/DevOps/', !isExternal)
-    if((isSw || isService) && url.pathname !==  '/DevOps/sw/index.sw.html'&& url.pathname !== '/DevOps/sw/' && url.pathname !==  '/DevOps/' && !isExternal) {
-        const isBrowser = isSw || url.pathname.includes('swagger-initializer.mjs')
-            || url.pathname.includes('/api/idKey')
-            || url.pathname.includes('/api/ansis')
-            || url.pathname.includes('/api/swagger')
-            || url.pathname.includes('/mss.yaml')
-            || url.pathname.includes('/api/index.css')
-            || url.pathname.includes('/api/swagger-ui.css')
-            || url.pathname.includes('/api/swagger-ui.css')
-            || url.pathname.includes('/api/swagger-ui.css')
-
-        console.log('---------------------- 1 - 2 --------------------------',isBrowser || isService,  url.pathname)
-
-        if ((isBrowser || isService) && !url.pathname.includes('git-upload-pack') && !url.pathname.includes('info/refs') || url.pathname.includes('/idKey/') || url.pathname.includes('/ansis/') || url.pathname.includes('/store/')) {
-
-            event.respondWith((async () => {
-                const servicePath = await readFile('config')
-                const string = textDecoder.decode(servicePath)
-
-                const path =  `${string}${url.pathname}`
-                // const path = isBrowser
-                //     ? `${string}/docs${url.pathname.replace('DevOps/sw/', '')}`
-                //     : `${string}${url.pathname}`
-
-                const options = getHeaders(destination, path)
-
-                console.log('---------------------- 1 - 2 - 3 --------------------------', path)
-                if(isBrowser) {
-                    try {
-                        console.log('---------------------- 1 - 2 - 3 & 4 --------------------------', path)
-                        const file = await readFile(path);
-                        return new Response(file, options)
-                    } catch (e) {
-                        let pathname = url.pathname.replace('/DevOps/sw/', '')
-                        pathname = pathname.replaceAll("%20",' ')
-                        const path = `${string}${pathname}`
-                        console.log('---------------------- 1 - 2 - 3 & 5 --------------------------', path)
-                        const file =  await readFile(path)
-                        return new Response(file, options)
-                    }
-                } else {
-                    console.log('---------------------- 1 - 2 - 3 & 6 --------------------------', path)
-                    return new Response(await readFile(path), options)
-                }
-            }) ());
+        if(!isSw) {
+            console.log('dddd', event.request.url);
+            // console.log('ddddddddddddddddddddddddd',location, event.request,  url.pathname)
         }
-    } else {
-        if(!isExternal) {
-            console.log('---------------------- 1 - 7 --------------------------', url.pathname)
-            event.respondWith(
-                fetch(event.request)
-                    .then(function (response) {
-                        const newHeaders = new Headers(response.headers);
-                        newHeaders.set("Cross-Origin-Embedder-Policy", "require-corp");
-                        newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
 
-                        const moddedResponse = new Response(response.body, {
-                            status: response.status,
-                            statusText: response.statusText,
-                            headers: newHeaders,
-                        });
+        console.log('----------------------- 1 -------------------------', isSw || isService, url.pathname !== '/DevOps/sw/', url.pathname !==  '/DevOps/', !isExternal)
+        if((isSw || isService) && url.pathname !==  '/DevOps/sw/index.sw.html'&& url.pathname !== '/DevOps/sw/' && url.pathname !==  '/DevOps/' && !isExternal) {
+            const isBrowser = isSw || url.pathname.includes('swagger-initializer.mjs')
+                || url.pathname.includes('/api/idKey')
+                || url.pathname.includes('/api/ansis')
+                || url.pathname.includes('/api/swagger')
+                || url.pathname.includes('/mss.yaml')
+                || url.pathname.includes('/api/index.css')
+                || url.pathname.includes('/api/swagger-ui.css')
+                || url.pathname.includes('/api/swagger-ui.css')
+                || url.pathname.includes('/api/swagger-ui.css')
 
-                        return moddedResponse;
-                    })
-                    .catch(function (e) {
-                        console.error(e);
-                    })
-            );
+            console.log('---------------------- 1 - 2 --------------------------',isBrowser || isService,  url.pathname)
+
+            if ((isBrowser || isService) && !url.pathname.includes('git-upload-pack') && !url.pathname.includes('info/refs') || url.pathname.includes('/idKey/') || url.pathname.includes('/ansis/') || url.pathname.includes('/store/')) {
+
+                event.respondWith((async () => {
+                    const servicePath = await readFile('config')
+                    const string = textDecoder.decode(servicePath)
+
+                    const path =  `${string}${url.pathname}`
+                    // const path = isBrowser
+                    //     ? `${string}/docs${url.pathname.replace('DevOps/sw/', '')}`
+                    //     : `${string}${url.pathname}`
+
+                    const options = getHeaders(destination, path)
+
+                    console.log('---------------------- 1 - 2 - 3 --------------------------', path)
+                    if(isBrowser) {
+                        try {
+                            console.log('---------------------- 1 - 2 - 3 & 4 --------------------------', path)
+                            const file = await readFile(path);
+                            return new Response(file, options)
+                        } catch (e) {
+                            let pathname = url.pathname.replace('/DevOps/sw/', '')
+                            pathname = pathname.replaceAll("%20",' ')
+                            const path = `${string}${pathname}`
+                            console.log('---------------------- 1 - 2 - 3 & 5 --------------------------', path)
+                            const file =  await readFile(path)
+                            return new Response(file, options)
+                        }
+                    } else {
+                        console.log('---------------------- 1 - 2 - 3 & 6 --------------------------', path)
+                        return new Response(await readFile(path), options)
+                    }
+                }) ());
+            }
         } else {
-            console.log('---------------------- 1 - 8 --------------------------', url.pathname)
+            if(!isExternal) {
+                console.log('---------------------- 1 - 7 --------------------------', url.pathname)
+                event.respondWith(
+                    fetch(event.request)
+                        .then(function (response) {
+                            const newHeaders = new Headers(response.headers);
+                            newHeaders.set("Cross-Origin-Embedder-Policy", "require-corp");
+                            newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
+
+                            const moddedResponse = new Response(response.body, {
+                                status: response.status,
+                                statusText: response.statusText,
+                                headers: newHeaders,
+                            });
+
+                            return moddedResponse;
+                        })
+                        .catch(function (e) {
+                            console.error(e);
+                        })
+                );
+            } else {
+                console.log('---------------------- 1 - 8 --------------------------', url.pathname)
+            }
         }
     }
 });
